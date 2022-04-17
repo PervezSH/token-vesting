@@ -68,4 +68,8 @@ describe("Token Vesting", () => {
     it("should check release per minute is 19.025875190258752 for 10 benificiary and 12 month duration", async function () {
         expect((await tokenVesting.releasePerMin()) / 10 ** 18).to.equal(19.025875190258752);
     })
+
+    it("should return token vested equal to 10000000 for the duration of more than 12 months", async function () {
+        expect((await tokenVesting.tokenVested(0, 31536001)) / 10 ** 18).to.equal(10000000);
+    })
 });

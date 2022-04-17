@@ -23,4 +23,16 @@ contract TokenVesting {
     function releasePerMin() public view returns (uint256) {
         return _releasePerMin;
     }
+
+    // returns total amount of token vested for a benificiary
+    function tokenVested(uint256 startTime_, uint256 endTime_)
+        external
+        view
+        returns (uint256)
+    {
+        uint256 minuteElasped = (block.timestamp - startTime_) / 60;
+        uint256 duration = (endTime_ - startTime_) / 60;
+        if (minuteElasped > duration) minuteElasped = duration;
+        return minuteElasped * releasePerMin();
+    }
 }
