@@ -9,7 +9,7 @@ contract XYZToken is ERC20, Ownable {
     address[] private _beneficiaries = new address[](10);
 
     constructor(uint256 initialSupply) ERC20("XYZ Token", "XYZ") {
-        _mint(msg.sender, initialSupply * (10 ^ decimals()));
+        _mint(msg.sender, initialSupply * (10**decimals()));
     }
 
     // returns benificiaries that will recieve tokens

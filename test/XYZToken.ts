@@ -23,7 +23,7 @@ describe("XYZ Token", () => {
     })
 
     it("should check the initial token supply is 100000000", async function () {
-        expect(await xyzToken.totalSupply()).to.equal(100000000 * (10 ^ 18));
+        expect(await xyzToken.totalSupply()).to.equal(100000000 * (10 ** 18));
     })
 
     it("should check beneficiaries added succesfully", async function () {
