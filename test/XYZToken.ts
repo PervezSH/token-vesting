@@ -4,6 +4,7 @@ import { Contract } from "ethers";
 import { ethers } from "hardhat";
 
 let xyzToken: Contract;
+let tokenVesting: Contract;
 
 async function deployContract(name: string, ...args: any) {
     const Contract = await ethers.getContractFactory(name);
@@ -23,7 +24,7 @@ describe("XYZ Token", () => {
     })
 
     it("should check the initial token supply is 100000000", async function () {
-        expect(await xyzToken.totalSupply()).to.equal(100000000 * (10 ** 18));
+        expect((await xyzToken.totalSupply()) / 10 ** 18).to.equal(100000000);
     })
 
     it("should check beneficiaries added succesfully", async function () {
@@ -52,5 +53,19 @@ describe("XYZ Token", () => {
             e = err;
         }
         expect(e.message.includes("You can add upto 10 benificiary!")).to.equal(true);
+    })
+});
+
+describe("Token Vesting", () => {
+    before(async function () {
+        tokenVesting = await deployContract("TokenVesting", xyzToken.address, 10);
+    })
+
+    it("should check amount to disperse to a benificiary is 10000000 for 10 benificiary", async function () {
+        expect((await tokenVesting.amount()) / 10 ** 18).to.equal(10000000);
+    })
+
+    it("should check release per minute is 19.025875190258752 for 10 benificiary and 12 month duration", async function () {
+        expect((await tokenVesting.releasePerMin()) / 10 ** 18).to.equal(19.025875190258752);
     })
 });
