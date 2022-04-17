@@ -1,0 +1,23 @@
+{
+  "name": "token-vesting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PervezSH/token-vesting.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PervezSH/token-vesting/issues"
+  },
+  "homepage": "https://github.com/PervezSH/token-vesting#readme",
+  "devDependencies": {
+    "hardhat": "^2.9.3"
+  }
+}
