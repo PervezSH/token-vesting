@@ -60,6 +60,11 @@ describe("XYZ Token", () => {
         }
         expect(e.message.includes("You can add upto 10 benificiary!")).to.equal(true);
     })
+
+    it("should return token vested equal to 0 for time elapsed equal to 0 minute", async function () {
+        await xyzToken.enableTokenVesting(_vestingDuration);
+        expect((await xyzToken.getVestedAmount()) / 10 ** 18).to.equal(0);
+    })
 });
 
 describe("Token Vesting", () => {
