@@ -5,6 +5,12 @@ import { ethers } from "hardhat";
 
 let xyzToken: Contract;
 let tokenVesting: Contract;
+// Args
+const _totalSupply = 100000000;             // total token supply
+const _decimals = 18;                       // token decimals
+const _totalBeneficiaries = 10;             // number of addresses that will recieve token
+const _vestingDuration = 31536000;          // duration for which token will get dispersed(in seconds)
+const _releaseRate = 19.025875190258752;    // token to get released per minute for above token supply, beneficiary, and vesting duration
 
 async function deployContract(name: string, ...args: any) {
     const Contract = await ethers.getContractFactory(name);
@@ -16,15 +22,15 @@ async function deployContract(name: string, ...args: any) {
 
 describe("XYZ Token", () => {
     before(async function () {
-        xyzToken = await deployContract("XYZToken", 100000000);
+        xyzToken = await deployContract("XYZToken", _totalSupply);
     })
 
     it("should check whether the decimals value is 18", async function () {
-        expect(await xyzToken.decimals()).to.equal(18);
+        expect(await xyzToken.decimals()).to.equal(_decimals);
     })
 
-    it("should check the initial token supply is 100000000", async function () {
-        expect((await xyzToken.totalSupply()) / 10 ** 18).to.equal(100000000);
+    it("should check the initial token supply", async function () {
+        expect((await xyzToken.totalSupply()) / 10 ** _decimals).to.equal(_totalSupply);
     })
 
     it("should check beneficiaries added succesfully", async function () {
@@ -58,18 +64,18 @@ describe("XYZ Token", () => {
 
 describe("Token Vesting", () => {
     before(async function () {
-        tokenVesting = await deployContract("TokenVesting", xyzToken.address, 10);
+        tokenVesting = await deployContract("TokenVesting", _totalSupply, _totalBeneficiaries, _vestingDuration);
     })
 
-    it("should check amount to disperse to a benificiary is 10000000 for 10 benificiary", async function () {
-        expect((await tokenVesting.amount()) / 10 ** 18).to.equal(10000000);
+    it("should check amount to disperse to a benificiary", async function () {
+        expect((await tokenVesting.amount()) / 10 ** _decimals).to.equal(_totalSupply / _totalBeneficiaries);
     })
 
-    it("should check release per minute is 19.025875190258752 for 10 benificiary and 12 month duration", async function () {
-        expect((await tokenVesting.releasePerMin()) / 10 ** 18).to.equal(19.025875190258752);
+    it("should check release rate", async function () {
+        expect((await tokenVesting.releasePerMin()) / 10 ** _decimals).to.equal(_releaseRate);
     })
 
-    it("should return token vested equal to 10000000 for the duration of more than 12 months", async function () {
-        expect((await tokenVesting.tokenVested(0, 31536001)) / 10 ** 18).to.equal(10000000);
+    it("should return token vested equal to the maximum amount of token a benificiary can recieve", async function () {
+        expect((await tokenVesting.tokenVested(0, _vestingDuration + 1)) / 10 ** _decimals).to.equal(_totalSupply / _totalBeneficiaries);
     })
 });
