@@ -8,6 +8,8 @@ contract TokenVesting {
     uint256 private immutable _amount;
     // amount of token that will get released per minute
     uint256 private _releaseRate;
+    // Map address to token released for that address
+    mapping(address => uint256) addressToReleased;
 
     constructor(
         uint256 totalSupply_,
@@ -26,6 +28,15 @@ contract TokenVesting {
     // returns the amount of token that will get released per minute
     function releasePerMin() public view returns (uint256) {
         return _releaseRate;
+    }
+
+    // returns amount of token released for a beneficiary
+    function tokenReleased(address beneficiary_)
+        external
+        view
+        returns (uint256)
+    {
+        return addressToReleased[beneficiary_];
     }
 
     // returns total amount of token vested for a benificiary

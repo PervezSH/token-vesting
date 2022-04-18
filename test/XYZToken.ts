@@ -65,6 +65,10 @@ describe("XYZ Token", () => {
         await xyzToken.enableTokenVesting(_vestingDuration);
         expect((await xyzToken.getVestedAmount()) / 10 ** 18).to.equal(0);
     })
+
+    it("should return the amount of token released for a benificiary", async function () {
+        expect(await xyzToken.getReleasedAmount("0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199")).to.equal(0);
+    })
 });
 
 describe("Token Vesting", () => {
@@ -81,6 +85,10 @@ describe("Token Vesting", () => {
     })
 
     it("should return token vested equal to the maximum amount of token a benificiary can recieve", async function () {
-        expect((await tokenVesting.tokenVested(0, _vestingDuration + 1)) / 10 ** _decimals).to.equal(_totalSupply / _totalBeneficiaries);
+        expect((await tokenVesting.tokenVested(0, _vestingDuration)) / 10 ** _decimals).to.equal(_totalSupply / _totalBeneficiaries);
+    })
+
+    it("should return the amount of token released for a beneficiary", async function () {
+        expect((await tokenVesting.tokenReleased("0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199"))).to.equal(0);
     })
 });

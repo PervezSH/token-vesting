@@ -58,4 +58,13 @@ contract XYZToken is ERC20, Ownable {
                 _vestingStartTime + _vestingDuration
             );
     }
+
+    // returns amount of token released for a beneficiary
+    function getReleasedAmount(address beneficiary_)
+        public
+        view
+        returns (uint256)
+    {
+        return tokenVesting.tokenReleased(beneficiary_);
+    }
 }
