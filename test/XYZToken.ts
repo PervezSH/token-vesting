@@ -116,17 +116,7 @@ describe("Token Vesting", () => {
 
     describe("#constructor()", function () {
         it("should check amount to disperse to a benificiary", async function () {
-            expect((await tokenVesting.amount()) / 10 ** _decimals).to.equal(_totalSupply / _totalBeneficiaries);
-        })
-
-        it("should check release rate", async function () {
-            expect((await tokenVesting.releasePerMin()) / 10 ** _decimals).to.equal(_releaseRate);
-        })
-    })
-
-    describe("#tokenVested()", function () {
-        it("should return token vested equal to the maximum amount of token a benificiary can recieve", async function () {
-            expect((await tokenVesting.tokenVested(0, _vestingDuration)) / 10 ** _decimals).to.equal(_totalSupply / _totalBeneficiaries);
+            expect((await tokenVesting.amount())).to.equal(_totalSupply / _totalBeneficiaries);
         })
     })
 

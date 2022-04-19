@@ -16,7 +16,7 @@ contract TokenVesting {
         uint256 totalBenificiaries_,
         uint256 vestingDuration_
     ) {
-        _amount = (totalSupply_ * 10**18) / totalBenificiaries_;
+        _amount = (totalSupply_) / totalBenificiaries_;
         _releaseRate = (_amount * 60) / vestingDuration_;
     }
 
