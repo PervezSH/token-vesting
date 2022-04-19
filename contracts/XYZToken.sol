@@ -40,6 +40,7 @@ contract XYZToken is ERC20, Ownable {
 
     // start vesting token for the added beneficiaries
     function enableTokenVesting(uint256 vestingDuration_) external onlyOwner {
+        require(_vestingStartTime == 0, "Token vesting already started!");
         _vestingStartTime = block.timestamp;
         _vestingDuration = vestingDuration_;
 

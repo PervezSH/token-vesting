@@ -75,6 +75,19 @@ describe("XYZ Token", () => {
         })
     })
 
+    describe("#enableTokenVesting()", function () {
+        it("should fail at enabling token vesting as it alreay started", async function () {
+            let e: any;
+            try {
+                await xyzToken.enableTokenVesting(_vestingDuration);
+            }
+            catch (err) {
+                e = err;
+            }
+            expect(e.message.includes("Token vesting already started!")).to.equal(true);
+        })
+    })
+
     describe("#getReleasedAmount()", function () {
         it("should return the amount of token released for a benificiary", async function () {
             expect(await xyzToken.getReleasedAmount("0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199")).to.equal(0);
@@ -99,7 +112,7 @@ describe("XYZ Token", () => {
                     "0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199",
                     "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
                 ]);
-                await xyzToken.enableTokenVesting(_vestingDuration);
+                // await xyzToken.enableTokenVesting(_vestingDuration);
                 await xyzToken.releaseToken();
             } catch (err) {
                 e = err;
