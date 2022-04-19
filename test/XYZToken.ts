@@ -68,14 +68,12 @@ describe("XYZ Token", () => {
         })
     })
 
-    describe("#getVestedAmount()", function () {
-        it("should return token vested equal to 0 for time elapsed equal to 0 minute", async function () {
-            await xyzToken.enableTokenVesting(_vestingDuration);
-            expect((await xyzToken.getVestedAmount()) / 10 ** 18).to.equal(0);
-        })
-    })
-
     describe("#enableTokenVesting()", function () {
+        it("should check the release rate", async function () {
+            await xyzToken.enableTokenVesting(_vestingDuration);
+            expect((await xyzToken.releaseRate()) / 10 ** _decimals).to.equal((_totalSupply * 60) / _vestingDuration);
+        })
+
         it("should fail at enabling token vesting as it alreay started", async function () {
             let e: any;
             try {
@@ -87,6 +85,13 @@ describe("XYZ Token", () => {
             expect(e.message.includes("Token vesting already started!")).to.equal(true);
         })
     })
+
+    describe("#getVestedAmount()", function () {
+        it("should return token vested equal to 0 for time elapsed equal to 0 minute", async function () {
+            expect((await xyzToken.getVestedAmount()) / 10 ** 18).to.equal(0);
+        })
+    })
+
 
     describe("#getReleasedAmount()", function () {
         it("should return the amount of token released for a benificiary", async function () {

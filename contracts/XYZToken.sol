@@ -5,15 +5,13 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./TokenVesting.sol";
 
-contract XYZToken is ERC20, Ownable {
+contract XYZToken is ERC20, Ownable, TokenVesting {
     // addresses where we will disperse token for 12 months, upto 10
-    address[] private _beneficiaries = new address[](10);
+    address[] private _beneficiaries;
     // timestamp when the token vesting is enabled
     uint256 private _vestingStartTime;
     // duration for which token will get dispersed(in seconds)
     uint256 private _vestingDuration;
-    // token vesting smart contract
-    TokenVesting tokenVesting;
 
     constructor(uint256 initialSupply) ERC20("XYZ Token", "XYZ") {
         _mint(msg.sender, initialSupply * (10**decimals()));
@@ -34,7 +32,7 @@ contract XYZToken is ERC20, Ownable {
             "You can add upto 10 benificiary!"
         );
         for (uint256 idx = 0; idx < beneficiaries_.length; idx++) {
-            _beneficiaries[idx] = (beneficiaries_[idx]);
+            _beneficiaries.push(beneficiaries_[idx]);
         }
     }
 
@@ -43,18 +41,14 @@ contract XYZToken is ERC20, Ownable {
         require(_vestingStartTime == 0, "Token vesting already started!");
         _vestingStartTime = block.timestamp;
         _vestingDuration = vestingDuration_;
-
-        tokenVesting = new TokenVesting(
-            totalSupply(),
-            _beneficiaries.length,
-            _vestingDuration
-        );
+        TokenVesting.setAmount(totalSupply(), _beneficiaries.length);
+        TokenVesting.setReleaseRate(_vestingDuration);
     }
 
     // returns token vested for a benificiary
     function getVestedAmount() public view returns (uint256) {
         return
-            tokenVesting.tokenVested(
+            TokenVesting.tokenVested(
                 _vestingStartTime,
                 _vestingStartTime + _vestingDuration
             );
@@ -66,7 +60,7 @@ contract XYZToken is ERC20, Ownable {
         view
         returns (uint256)
     {
-        return tokenVesting.tokenReleased(beneficiary_);
+        return TokenVesting.tokenReleased(beneficiary_);
     }
 
     // returns true if msg.sender is a beneficiary
@@ -90,6 +84,6 @@ contract XYZToken is ERC20, Ownable {
             getReleasedAmount(msg.sender);
         require(releasableToken > 0, "No tokens to release");
         _transfer(owner(), msg.sender, releasableToken);
-        tokenVesting.updateReleasedAmount(msg.sender, releasableToken);
+        TokenVesting.updateReleasedAmount(msg.sender, releasableToken);
     }
 }
