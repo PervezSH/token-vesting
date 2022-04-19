@@ -51,7 +51,7 @@ contract XYZToken is ERC20, Ownable {
     }
 
     // returns token vested for a benificiary
-    function getVestedAmount() external view returns (uint256) {
+    function getVestedAmount() public view returns (uint256) {
         return
             tokenVesting.tokenVested(
                 _vestingStartTime,
@@ -66,5 +66,28 @@ contract XYZToken is ERC20, Ownable {
         returns (uint256)
     {
         return tokenVesting.tokenReleased(beneficiary_);
+    }
+
+    // returns true if msg.sender is a beneficiary
+    function isBeneficiary() public view returns (bool) {
+        for (uint256 idx = 0; idx < _beneficiaries.length; idx++) {
+            if (msg.sender == _beneficiaries[idx]) return true;
+        }
+        return false;
+    }
+
+    // throws if called by any account other than the beneficiary
+    modifier onlyBeneficiaries() {
+        require(isBeneficiary(), "You are not a benificiary!");
+        _;
+    }
+
+    // transfer token held by the owner to the beneficiary who calls this
+    // will succed only if there is some releasable token for a beneficiary
+    function releaseToken() external onlyBeneficiaries {
+        uint256 releaseableToken = getVestedAmount() -
+            getReleasedAmount(msg.sender);
+        require(releaseableToken > 0, "No tokens to release");
+        _transfer(owner(), msg.sender, releaseableToken);
     }
 }
