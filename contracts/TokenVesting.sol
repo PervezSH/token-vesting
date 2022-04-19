@@ -5,18 +5,24 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract TokenVesting {
     // amount of token to disperse to each benificiary
-    uint256 private immutable _amount;
+    uint256 private _amount;
     // amount of token that will get released per minute
     uint256 private _releaseRate;
     // Map address to token released for that address
     mapping(address => uint256) addressToReleased;
 
-    constructor(
-        uint256 totalSupply_,
-        uint256 totalBenificiaries_,
-        uint256 vestingDuration_
-    ) {
+    // assign _amount, amount of token to disperse to each beneficiary
+    function setAmount(uint256 totalSupply_, uint256 totalBenificiaries_)
+        public
+    {
+        require(_amount == 0, "_amount: Already Initialized!");
         _amount = (totalSupply_) / totalBenificiaries_;
+    }
+
+    // assign _releaseRate, amount of to get released per minute
+    function setReleaseRate(uint256 vestingDuration_) public {
+        require(_amount != 0, "_amount Not Initialized!");
+        require(_releaseRate == 0, "_releaseRate: Already Initialized!");
         _releaseRate = (_amount * 60) / vestingDuration_;
     }
 
@@ -26,34 +32,30 @@ contract TokenVesting {
     }
 
     // returns the amount of token that will get released per minute
-    function releasePerMin() public view returns (uint256) {
+    function releaseRate() public view returns (uint256) {
         return _releaseRate;
     }
 
     // returns amount of token released for a beneficiary
-    function tokenReleased(address beneficiary_)
-        external
-        view
-        returns (uint256)
-    {
+    function tokenReleased(address beneficiary_) public view returns (uint256) {
         return addressToReleased[beneficiary_];
     }
 
     // returns total amount of token vested for a benificiary
     function tokenVested(uint256 startTime_, uint256 endTime_)
-        external
+        public
         view
         returns (uint256)
     {
         uint256 minuteElasped = (block.timestamp - startTime_) / 60;
         uint256 duration = (endTime_ - startTime_) / 60;
         if (minuteElasped > duration) minuteElasped = duration;
-        return minuteElasped * releasePerMin();
+        return minuteElasped * releaseRate();
     }
 
     // updates release amount for a beneficiary
     function updateReleasedAmount(address beneficiary_, uint256 releaseAmount_)
-        external
+        public
     {
         addressToReleased[beneficiary_] = releaseAmount_;
     }

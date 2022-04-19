@@ -124,12 +124,40 @@ describe("XYZ Token", () => {
 
 describe("Token Vesting", () => {
     before(async function () {
-        tokenVesting = await deployContract("TokenVesting", _totalSupply, _totalBeneficiaries, _vestingDuration);
+        tokenVesting = await deployContract("TokenVesting");
     })
 
-    describe("#constructor()", function () {
-        it("should check amount to disperse to a benificiary", async function () {
-            expect((await tokenVesting.amount())).to.equal(_totalSupply / _totalBeneficiaries);
+    describe("#setAmount()", function () {
+        it("should assign value to the variable _amount", async function () {
+            await tokenVesting.setAmount(_totalSupply, _totalBeneficiaries);
+            expect(await tokenVesting.amount()).to.equal(_totalSupply / _totalBeneficiaries);
+        })
+
+        it("should fail at assigning value to the variable _amount", async function () {
+            let e: any;
+            try {
+                await tokenVesting.setAmount(_totalSupply, _totalBeneficiaries);
+            } catch (err) {
+                e = err;
+            }
+            expect(e.message.includes("_amount: Already Initialized!")).to.equal(true);
+        })
+    })
+
+    describe("#setReleaseRate()", function () {
+        it("should assign value to the variable _releaseRate", async function () {
+            await tokenVesting.setReleaseRate(_vestingDuration);
+            expect(await tokenVesting.releaseRate()).to.equal(19);
+        })
+
+        it("should fail at assigning value to the variable _releaseRate", async function () {
+            let e: any;
+            try {
+                await tokenVesting.setReleaseRate(_vestingDuration);
+            } catch (err) {
+                e = err;
+            }
+            expect(e.message.includes("_releaseRate: Already Initialized!")).to.equal(true);
         })
     })
 
