@@ -85,9 +85,10 @@ contract XYZToken is ERC20, Ownable {
     // transfer token held by the owner to the beneficiary who calls this
     // will succed only if there is some releasable token for a beneficiary
     function releaseToken() external onlyBeneficiaries {
-        uint256 releaseableToken = getVestedAmount() -
+        uint256 releasableToken = getVestedAmount() -
             getReleasedAmount(msg.sender);
-        require(releaseableToken > 0, "No tokens to release");
-        _transfer(owner(), msg.sender, releaseableToken);
+        require(releasableToken > 0, "No tokens to release");
+        _transfer(owner(), msg.sender, releasableToken);
+        tokenVesting.updateReleasedAmount(msg.sender, releasableToken);
     }
 }

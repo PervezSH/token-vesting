@@ -50,4 +50,11 @@ contract TokenVesting {
         if (minuteElasped > duration) minuteElasped = duration;
         return minuteElasped * releasePerMin();
     }
+
+    // updates release amount for a beneficiary
+    function updateReleasedAmount(address beneficiary_, uint256 releaseAmount_)
+        external
+    {
+        addressToReleased[beneficiary_] = releaseAmount_;
+    }
 }
