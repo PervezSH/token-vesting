@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { ethers } from "ethers";
+import abi from "./utils/XYZToken.json";
 import './App.css';
 import Beneficiary from './components/beneficiary';
 import Vesting from './components/vesting';
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState(null);
+  const [tokenContract, setTokenContract] = useState(null);
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -54,6 +57,27 @@ function App() {
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
+
+  // set a reusable contract object
+  useEffect(() => {
+    //@ts-ignore
+    const { ethereum } = window;
+
+    if (ethereum) {
+      //@ts-ignore
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+        abi.abi,
+        signer
+      );
+      //@ts-ignore
+      setTokenContract(contract);
+      console.log("Token Contract: ", contract)
+    }
+  }, []);
+
 
   const renderContent = () => {
     if (!currentAccount) {
