@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 import abi from "./utils/XYZToken.json";
 import './App.css';
 import Beneficiary from './components/beneficiary';
@@ -7,8 +7,10 @@ import Vesting from './components/vesting';
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState(null);
-  const [tokenContract, setTokenContract] = useState(null);
+  const [tokenContract, setTokenContract] = useState<Contract>();
+  const [beneficiaries, setBeneficiaries] = useState<string[]>([]);
 
+  // check for wallet, and connects it if we're authorized to
   const checkIfWalletIsConnected = async () => {
     try {
       // @ts-ignore
@@ -36,7 +38,7 @@ function App() {
     }
   }
 
-  //Connects my wallet to this site
+  // connects wallet to this site
   const connectWallet = async () => {
     try {
       // @ts-ignore
@@ -72,12 +74,28 @@ function App() {
         abi.abi,
         signer
       );
-      //@ts-ignore
       setTokenContract(contract);
       console.log("Token Contract: ", contract)
     }
   }, []);
 
+  // fetchs beneficiaries from the contract
+  useEffect(() => {
+    const fetchBeneficiaries = async () => {
+      try {
+        if (tokenContract) {
+          const txn = await tokenContract.beneficiaries();
+          setBeneficiaries(txn);
+          console.log(txn);
+        }
+      } catch (error) {
+        console.log("Something went wrong while fetching beneficiaries :", error)
+      }
+    }
+
+    console.log("Fetching beneficiaries...");
+    fetchBeneficiaries();
+  }, [tokenContract]);
 
   const renderContent = () => {
     if (!currentAccount) {
@@ -92,16 +110,24 @@ function App() {
         </div>
       );
     } else {
-      return (
-        <div>
-          <div className='beneficiary-section'>
-            <Beneficiary />
+      if (beneficiaries.length === 0) {
+        return (
+          <div>
+            Add Beneficiaries!
           </div>
-          <div className='vesting-section'>
-            <Vesting />
+        )
+      } else {
+        return (
+          <div>
+            <div className='beneficiary-section'>
+              <Beneficiary />
+            </div>
+            <div className='vesting-section'>
+              <Vesting />
+            </div>
           </div>
-        </div>
-      )
+        )
+      }
     }
   }
 
