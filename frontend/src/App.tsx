@@ -114,7 +114,7 @@ function App() {
       if (beneficiaries.length === 0) {
         return (
           <div>
-            <AddBeneficiary />
+            <AddBeneficiary contract={tokenContract} />
           </div>
         )
       } else {

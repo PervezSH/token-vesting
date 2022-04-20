@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import { Contract } from "ethers";
 
-const AddBeneficiary = () => {
+type Props = {
+    contract: Contract | undefined;
+}
+
+const AddBeneficiary: React.FC<Props> = ({ contract }) => {
     const [beneficiaryInput, setBeneficiaryInput] = useState<string>("");
+    const [durationInput, setDurationInput] = useState<number>();
     const [beneficiaries] = useState<string[]>([]);
 
     const addBeneficiaryToList = () => {
@@ -10,6 +16,24 @@ const AddBeneficiary = () => {
             else alert("Maximum of 10 address can be added 🤕")
             setBeneficiaryInput("");
         }
+    }
+
+    const startVesting = async () => {
+        try {
+            if (contract && beneficiaries.length !== 0 && durationInput) {
+                // add beneficiary
+                console.log("Enabling vesting...🚀");
+                await contract.addBenificiaries(beneficiaries);
+                console.log("Beneficiary added succesfully ✅");
+                await contract.enableTokenVesting(durationInput * 86400);
+                console.log("Token vesting enabled ✅");
+                console.log("Amount of token to disperse to a beneficiary: ", (await contract.amount()) / 10 ** 18);
+                console.log("Amount of token to get vested per minute: ", (await contract.releaseRate()) / 10 ** 18);
+            }
+        } catch (error) {
+            console.log("Something went wrong while enabling token vesting: ", error);
+        }
+        setDurationInput(0);
     }
 
     return (
@@ -41,7 +65,16 @@ const AddBeneficiary = () => {
                     </div>
                 ))}
             </div>
-            <button className="button start-vesting" >
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                startVesting();
+            }}>
+                <input type="number" placeholder="Enter vesting duration (in days)"
+                    value={durationInput}
+                    onChange={(e) => setDurationInput(e.target.valueAsNumber)}
+                />
+            </form>
+            <button className="button start-vesting" onClick={startVesting}>
                 Start Vesting
             </button>
         </div>
