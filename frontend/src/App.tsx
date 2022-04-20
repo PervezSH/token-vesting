@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Beneficiary from './components/beneficiary';
+import Vesting from './components/vesting';
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState(null);
@@ -65,6 +67,17 @@ function App() {
           </button>
         </div>
       );
+    } else {
+      return (
+        <div>
+          <div className='beneficiary-section'>
+            <Beneficiary />
+          </div>
+          <div className='vesting-section'>
+            <Vesting />
+          </div>
+        </div>
+      )
     }
   }
 
