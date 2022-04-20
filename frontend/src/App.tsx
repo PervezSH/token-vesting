@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Contract, ethers } from "ethers";
 import abi from "./utils/XYZToken.json";
 import './App.css';
+import AddBeneficiary from './components/add-beneficiary';
 import Beneficiary from './components/beneficiary';
 import Vesting from './components/vesting';
 
@@ -113,7 +114,7 @@ function App() {
       if (beneficiaries.length === 0) {
         return (
           <div>
-            Add Beneficiaries!
+            <AddBeneficiary />
           </div>
         )
       } else {
