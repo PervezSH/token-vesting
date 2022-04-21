@@ -22,6 +22,16 @@ contract XYZToken is ERC20, Ownable, TokenVesting {
         return _beneficiaries;
     }
 
+    // returns timestamp when token vesting is enabled
+    function vestingStartTime() public view returns (uint256) {
+        return _vestingStartTime;
+    }
+
+    // returns timestamp when token vesting is enabled
+    function vestingDuration() public view returns (uint256) {
+        return _vestingDuration;
+    }
+
     // add beneficiaries that will recieve tokens
     function addBenificiaries(address[] memory beneficiaries_)
         external
