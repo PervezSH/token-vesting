@@ -124,7 +124,7 @@ function App() {
               <Beneficiary />
             </div>
             <div className='vesting-section'>
-              <Vesting />
+              <Vesting contract={tokenContract} beneficiaries={beneficiaries} />
             </div>
           </div>
         )
