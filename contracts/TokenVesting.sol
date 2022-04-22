@@ -54,9 +54,7 @@ contract TokenVesting {
     }
 
     // updates release amount for a beneficiary
-    function updateReleasedAmount(address beneficiary_, uint256 releaseAmount_)
-        public
-    {
-        addressToReleased[beneficiary_] = releaseAmount_;
+    function updateReleasedAmount(uint256 releaseAmount_) internal {
+        addressToReleased[msg.sender] += releaseAmount_;
     }
 }

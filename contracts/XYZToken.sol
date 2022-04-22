@@ -64,15 +64,6 @@ contract XYZToken is ERC20, Ownable, TokenVesting {
             );
     }
 
-    // returns amount of token released for a beneficiary
-    function getReleasedAmount(address beneficiary_)
-        public
-        view
-        returns (uint256)
-    {
-        return TokenVesting.tokenReleased(beneficiary_);
-    }
-
     // returns true if msg.sender is a beneficiary
     function isBeneficiary() public view returns (bool) {
         for (uint256 idx = 0; idx < _beneficiaries.length; idx++) {
@@ -91,9 +82,9 @@ contract XYZToken is ERC20, Ownable, TokenVesting {
     // will succed only if there is some releasable token for a beneficiary
     function releaseToken() external onlyBeneficiaries {
         uint256 releasableToken = getVestedAmount() -
-            getReleasedAmount(msg.sender);
+            TokenVesting.tokenReleased(msg.sender);
         require(releasableToken > 0, "No tokens to release");
         _transfer(owner(), msg.sender, releasableToken);
-        TokenVesting.updateReleasedAmount(msg.sender, releasableToken);
+        TokenVesting.updateReleasedAmount(releasableToken);
     }
 }
