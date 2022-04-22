@@ -27,8 +27,7 @@ const AddBeneficiary: React.FC<Props> = ({ contract }) => {
                 console.log("Beneficiary added succesfully ✅");
                 await contract.enableTokenVesting(durationInput * 86400);
                 console.log("Token vesting enabled ✅");
-                console.log("Amount of token to disperse to a beneficiary: ", (await contract.amount()) / 10 ** 18);
-                console.log("Amount of token to get vested per minute: ", (await contract.releaseRate()) / 10 ** 18);
+                window.location.reload()
             }
         } catch (error) {
             console.log("Something went wrong while enabling token vesting: ", error);

@@ -37,6 +37,7 @@ const Beneficiary: React.FC<Props> = ({ contract, beneficiaries }) => {
                 console.log("Something went wrong while fetching releasable token: ", error);
             }
         }
+        fetchReleasableToken();
         setInterval(fetchReleasableToken, 60000);
     }, [contract, beneficiaries, released]);
 

@@ -64,6 +64,7 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
                 console.log("Something went wrong while fetching total vesting: ", error);
             }
         }
+        fetchAlreadyVested();
         setInterval(fetchAlreadyVested, 60000);
     }, [contract, beneficiaries]);
 
@@ -71,13 +72,11 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
         // fetch the amount of token that is already released
         const fetchAlreadyReleased = async () => {
             try {
-                if (contract) {
-                    let releasedAmount = 0;
-                    beneficiaries.forEach(async (beneficiary) => {
-                        releasedAmount += await contract.balanceOf(beneficiary);
-                    })
-                    setAlreadyReleased(releasedAmount);
-                }
+                let releasedAmount = 0;
+                beneficiaries.forEach(async (beneficiary) => {
+                    releasedAmount += ((await contract?.tokenReleased(beneficiary)) / 10 ** await contract?.decimals());
+                })
+                setAlreadyReleased(releasedAmount);
             } catch (error) {
                 console.log("Something went wrong while fetching already released token: ", error);
             }
