@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Contract } from "ethers";
+import "./css/beneficiary.css";
 
 type Props = {
     contract: Contract | undefined;
@@ -46,33 +47,31 @@ const Beneficiary: React.FC<Props> = ({ contract, beneficiaries }) => {
             <h2>
                 Beneficiary Details
             </h2>
-            <div className="detail-header">
-                <p className="header-text">
-                    Address
-                </p>
-                <p className="header-text">
-                    Token Releasable
-                </p>
-                <p className="header-text">
-                    Token Released
-                </p>
-            </div>
             <div className="beneficiary-box">
                 <div className="beneficiary-address">
+                    <p className="header-text">
+                        Address
+                    </p>
                     {beneficiaries.map((address) => (
                         <p key={address}>
                             {address}
                         </p>
                     ))}
                 </div>
-                <div className="token-releasable">
+                <div>
+                    <p className="header-text">
+                        Token Releasable
+                    </p>
                     {releasable.map((releasablAmount, index) => (
                         <p key={index}>
                             {releasablAmount}
                         </p>
                     ))}
                 </div>
-                <div className="token-released">
+                <div>
+                    <p className="header-text">
+                        Token Released
+                    </p>
                     {released.map((releaseAmount, index) => (
                         <p key={index}>
                             {releaseAmount}
