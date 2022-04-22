@@ -42,7 +42,7 @@ const Beneficiary: React.FC<Props> = ({ contract, beneficiaries }) => {
     }, [contract, beneficiaries, released]);
 
     return (
-        <div>
+        <div className='beneficiary-section'>
             <h2>
                 Beneficiary Details
             </h2>

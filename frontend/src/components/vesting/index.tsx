@@ -115,7 +115,7 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
     }, [contract, fetchAlreadyReleased]);
 
     return (
-        <div>
+        <div className='vesting-section'>
             <h2>
                 Vesting Details
             </h2>

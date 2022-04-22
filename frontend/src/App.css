@@ -1,0 +1,25 @@
+.App {
+    background: #000 url('https://image.ibb.co/mjnygo/stars.png') repeat top center;
+    text-align: center;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 30px 0 30px;
+}
+
+.App-header {
+    margin: 10vh;
+    font-size: 50px;
+    font-weight: bold;
+    color: white;
+}
+
+.App-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}

@@ -119,11 +119,11 @@ function App() {
         )
       } else {
         return (
-          <div>
-            <div className='beneficiary-section'>
+          <div className='App-body'>
+            <div>
               <Beneficiary contract={tokenContract} beneficiaries={beneficiaries} />
             </div>
-            <div className='vesting-section'>
+            <div >
               <Vesting contract={tokenContract} beneficiaries={beneficiaries} />
             </div>
           </div>
@@ -136,11 +136,9 @@ function App() {
     <div className="App">
       <div className='container'>
         <header className="App-header">
-          <div className='header-text'>
-            XYZ Token DApp
-          </div>
+          XYZ Token DApp 🚀
         </header>
-        <div className='App-body'>
+        <div>
           {renderContent()}
         </div>
       </div>
