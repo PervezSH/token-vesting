@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Contract } from "ethers";
+import "./css/vesting.css"
 
 type Props = {
     contract: Contract | undefined;
@@ -119,39 +120,44 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
             <h2>
                 Vesting Details
             </h2>
-            <div className="details-item">
-                <p>Start Date</p>
-                <div>
-                    {startDate.getHours()}:{startDate.getMinutes()} {startDate.getDate()}/{startDate.getMonth()}/{startDate.getFullYear()}
+            <div className="vesting-box">
+                <div className="details-item">
+                    <div className="details-text">Start Date</div>
+                    <div>
+                        {startDate.getHours()}:{startDate.getMinutes()} {startDate.getDate()}/{startDate.getMonth()}/{startDate.getFullYear()}
+                    </div>
+                </div>
+                <div className="details-item">
+                    <div className="details-text">End Date</div>
+                    <div>
+                        {endDate.getHours()}:{endDate.getMinutes()} {endDate.getDate()}/{endDate.getMonth()}/{endDate.getFullYear()}
+                    </div>
+                </div>
+                <div className="details-item">
+                    <div className="details-text">Total Vesting</div>
+                    <div>
+                        {totalVesting}
+                    </div>
+                </div>
+                <div className="details-item">
+                    <div className="details-text">Already Vested</div>
+                    <div>
+                        {alreadyVested}
+                    </div>
+                </div>
+                <div className="details-item">
+                    <div className="details-text">Already Released</div>
+                    <div>
+                        {alreadyReleased}
+                    </div>
                 </div>
             </div>
-            <div className="details-item">
-                <p>End Date</p>
-                <div>
-                    {endDate.getHours()}:{endDate.getMinutes()} {endDate.getDate()}/{endDate.getMonth()}/{endDate.getFullYear()}
-                </div>
-            </div>
-            <div className="details-item">
-                <p>Total Vesting</p>
-                <div>
-                    {totalVesting}
-                </div>
-            </div>
-            <div className="details-item">
-                <p>Already Vested</p>
-                <div>
-                    {alreadyVested}
-                </div>
-            </div>
-            <div className="details-item">
-                <p>Already Released</p>
-                <div>
-                    {alreadyReleased}
-                </div>
-            </div>
-            <button className="release-button" onClick={releaseToken}>
+            <button onClick={releaseToken}>
                 Release
             </button>
+            <div>
+                This will trigger transactions that you will need to sign.
+            </div>
         </div>
     )
 }

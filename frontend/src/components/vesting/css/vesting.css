@@ -1,0 +1,93 @@
+.vesting-section {
+  color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 2rem;
+}
+
+.vesting-box {
+  background-color: white;
+  color: black;
+  padding: 1rem;
+  border-radius: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.details-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.details-item div {
+  padding: 0.5rem;
+}
+
+.details-item .details-text {
+  font-weight: bold;
+}
+
+button {
+  cursor: pointer;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  font-family: inherit;
+  padding: 1.2rem 2rem;
+  text-transform: uppercase;
+  border-radius: 3rem;
+  font-size: 1.2rem;
+  background-image: -webkit-gradient(linear, left top, right top, from(#00ff62), color-stop(0%, #00ff88), color-stop(21%, #00ff88), color-stop(52%, #00fff2), color-stop(78%, #00eeff), to(#00e1ff));
+  background-image: linear-gradient(to right, #00ff62 0%, #00ff88 0%, #00ff88 21%, #00fff2 52%, #00eeff 78%, #00e1ff 100%);
+  background-size: 200% 200%;
+  -webkit-animation: gradient-animation 4s ease infinite;
+          animation: gradient-animation 4s ease infinite;
+}
+
+button:hover {
+  background-color: #121212;
+}
+
+/* KeyFrames */
+@-webkit-keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+/*# sourceMappingURL=vesting.css.map */
