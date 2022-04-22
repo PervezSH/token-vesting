@@ -5,8 +5,9 @@ import "@nomiclabs/hardhat-waffle";
 module.exports = {
   solidity: "0.8.10",
   networks: {
-    hardhat: {
-      chainId: 1337
+    rinkeby: {
+      url: "YOUR_ALCHEMY_API_URL",
+      accounts: ["YOUR_PRIVATE_RINKEBY_ACCOUNT_KEY"],
     }
   }
 };
