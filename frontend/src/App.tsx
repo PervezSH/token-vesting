@@ -121,7 +121,7 @@ function App() {
         return (
           <div>
             <div className='beneficiary-section'>
-              <Beneficiary />
+              <Beneficiary contract={tokenContract} beneficiaries={beneficiaries} />
             </div>
             <div className='vesting-section'>
               <Vesting contract={tokenContract} beneficiaries={beneficiaries} />
