@@ -12,6 +12,8 @@ contract XYZToken is ERC20, Ownable, TokenVesting {
     uint256 private _vestingStartTime;
     // duration for which token will get dispersed(in seconds)
     uint256 private _vestingDuration;
+    // Token release event
+    event TokenRelease(uint256 releasedAmount);
 
     constructor(uint256 initialSupply) ERC20("XYZ Token", "XYZ") {
         _mint(msg.sender, initialSupply * (10**decimals()));
@@ -86,5 +88,6 @@ contract XYZToken is ERC20, Ownable, TokenVesting {
         require(releasableToken > 0, "No tokens to release");
         _transfer(owner(), msg.sender, releasableToken);
         TokenVesting.updateReleasedAmount(releasableToken);
+        emit TokenRelease(releasableToken);
     }
 }
