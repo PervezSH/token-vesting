@@ -23,9 +23,11 @@ const AddBeneficiary: React.FC<Props> = ({ contract }) => {
             if (contract && beneficiaries.length !== 0 && durationInput) {
                 // add beneficiary
                 console.log("Enabling vesting...🚀");
-                await contract.addBenificiaries(beneficiaries);
+                const txn1 = await contract.addBenificiaries(beneficiaries);
+                await txn1.wait();
                 console.log("Beneficiary added succesfully ✅");
-                await contract.enableTokenVesting(durationInput * 86400);
+                const txn2 = await contract.enableTokenVesting(durationInput * 86400);
+                await txn2.wait();
                 console.log("Token vesting enabled ✅");
                 window.location.reload()
             }

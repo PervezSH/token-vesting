@@ -16,7 +16,8 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
     // transfers amount of releaseable 
     const releaseToken = async () => {
         try {
-            await contract?.releaseToken();
+            const txn = await contract?.releaseToken();
+            await txn.wait();
         } catch (error) {
             const stringifiedError = JSON.stringify(error);
             if (stringifiedError.includes("You are not a benificiary!")) {
