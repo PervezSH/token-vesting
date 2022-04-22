@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Contract, ethers } from "ethers";
+import React, { useCallback, useEffect, useState } from "react";
+import { Contract } from "ethers";
 
 type Props = {
     contract: Contract | undefined;
@@ -16,11 +16,6 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
     // transfers amount of releaseable 
     const releaseToken = async () => {
         try {
-            //@ts-ignore
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
-            const address = await signer.getAddress();
-            console.log(address);
             await contract?.releaseToken();
         } catch (error) {
             const stringifiedError = JSON.stringify(error);
@@ -34,6 +29,7 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
                 console.log("Something went wrong while releasing token: ", error);
             }
         }
+        alert("XYZ token got released successfully!");
     }
 
     useEffect(() => {
@@ -91,21 +87,31 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
         setInterval(fetchAlreadyVested, 60000);
     }, [contract, beneficiaries]);
 
-    useEffect(() => {
-        // fetch the amount of token that is already released
-        const fetchAlreadyReleased = async () => {
-            try {
-                let releasedAmount = 0;
-                for (let beneficiary of beneficiaries) {
-                    releasedAmount += ((await contract?.tokenReleased(beneficiary)) / 10 ** await contract?.decimals());
-                }
-                setAlreadyReleased(releasedAmount);
-            } catch (error) {
-                console.log("Something went wrong while fetching already released token: ", error);
+
+    // fetch the amount of token that is already released
+    const fetchAlreadyReleased = useCallback(async () => {
+        try {
+            let releasedAmount = 0;
+            for (let beneficiary of beneficiaries) {
+                releasedAmount += ((await contract?.tokenReleased(beneficiary)) / 10 ** await contract?.decimals());
             }
+            setAlreadyReleased(releasedAmount);
+        } catch (error) {
+            console.log("Something went wrong while fetching already released token: ", error);
         }
+    }, [contract, beneficiaries])
+
+    useEffect(() => {
         fetchAlreadyReleased();
-    }, [contract, beneficiaries]);
+    }, [fetchAlreadyReleased]);
+
+    // listen to token release event
+    useEffect(() => {
+        contract?.on("TokenRelease", (releasedAmount) => {
+            console.log(releasedAmount);
+            fetchAlreadyReleased();
+        })
+    }, [contract, fetchAlreadyReleased]);
 
     return (
         <div>
