@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Contract } from "ethers";
+import { Contract, ethers } from "ethers";
 
 type Props = {
     contract: Contract | undefined;
@@ -12,6 +12,29 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
     const [totalVesting, setTotalVesting] = useState<number>(0);
     const [alreadyVested, setAlreadyVested] = useState<number>(0);
     const [alreadyReleased, setAlreadyReleased] = useState<number>(0);
+
+    // transfers amount of releaseable 
+    const releaseToken = async () => {
+        try {
+            //@ts-ignore
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const address = await signer.getAddress();
+            console.log(address);
+            await contract?.releaseToken();
+        } catch (error) {
+            const stringifiedError = JSON.stringify(error);
+            if (stringifiedError.includes("You are not a benificiary!")) {
+                alert("You are not a benificiary!");
+            }
+            else if (stringifiedError.includes("No tokens to release")) {
+                alert("No tokens to release");
+            }
+            else {
+                console.log("Something went wrong while releasing token: ", error);
+            }
+        }
+    }
 
     useEffect(() => {
         // fetch the timestamp when token vesting is enabled
@@ -73,9 +96,9 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
         const fetchAlreadyReleased = async () => {
             try {
                 let releasedAmount = 0;
-                beneficiaries.forEach(async (beneficiary) => {
+                for (let beneficiary of beneficiaries) {
                     releasedAmount += ((await contract?.tokenReleased(beneficiary)) / 10 ** await contract?.decimals());
-                })
+                }
                 setAlreadyReleased(releasedAmount);
             } catch (error) {
                 console.log("Something went wrong while fetching already released token: ", error);
@@ -119,6 +142,9 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
                     {alreadyReleased}
                 </div>
             </div>
+            <button className="release-button" onClick={releaseToken}>
+                Release
+            </button>
         </div>
     )
 }
