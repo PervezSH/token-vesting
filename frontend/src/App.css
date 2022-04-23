@@ -1,4 +1,5 @@
 .App {
+    height: 100vh;
     background: #000 url('https://image.ibb.co/mjnygo/stars.png') repeat top center;
     text-align: center;
 }
@@ -12,7 +13,7 @@
 }
 
 .App-header {
-    margin: 10vh;
+    margin: 5vh;
     font-size: 50px;
     font-weight: bold;
     color: white;
@@ -22,4 +23,14 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+}
+
+.subheader-text {
+    color: white;
+    font-weight: bold;
+}
+
+.connect-wallet {
+    margin: 2rem;
+    min-width: 100vh;
 }

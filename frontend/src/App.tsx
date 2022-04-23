@@ -103,9 +103,9 @@ function App() {
       return (
         <div>
           <div className='subheader-text'>
-            Interact with the XYZ token
+            Interact with the XYZ token 🪙
           </div>
-          <button className='button connect-wallet' onClick={connectWallet}>
+          <button className='connect-wallet' onClick={connectWallet}>
             Connect Wallet
           </button>
         </div>
@@ -138,6 +138,11 @@ function App() {
         <header className="App-header">
           XYZ Token DApp 🚀
         </header>
+        {beneficiaries.length > 0 &&
+          <div className='subheader-text'>
+            Congratulations on being a beneficiary 🥳
+          </div>
+        }
         <div>
           {renderContent()}
         </div>
