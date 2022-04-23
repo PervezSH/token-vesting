@@ -10,6 +10,7 @@ function App() {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [tokenContract, setTokenContract] = useState<Contract>();
   const [beneficiaries, setBeneficiaries] = useState<string[]>([]);
+  const [chainID, setChainID] = useState<string>("");
 
   // check for wallet, and connects it if we're authorized to
   const checkIfWalletIsConnected = async () => {
@@ -23,6 +24,11 @@ function App() {
       } else {
         console.log("We have the ethereum object", ethereum);
       }
+
+      // Check if user is connected to rinkeby test network
+      let chainId = await ethereum.request({ method: 'eth_chainId' });
+      console.log("Connected to chain " + chainId);
+      setChainID(chainId);
 
       // if we're authorized to acess the user's wallet
       const accounts = await ethereum.request({ method: 'eth_accounts' });
@@ -94,41 +100,55 @@ function App() {
       }
     }
 
-    console.log("Fetching beneficiaries...");
-    fetchBeneficiaries();
-  }, [tokenContract]);
+    if (currentAccount) {
+      console.log("Fetching beneficiaries...");
+      fetchBeneficiaries();
+    }
+  }, [tokenContract, currentAccount]);
 
   const renderContent = () => {
-    if (!currentAccount) {
-      return (
-        <div>
-          <div className='subheader-text'>
-            Interact with the XYZ token 🪙
-          </div>
-          <button className='connect-wallet' onClick={connectWallet}>
-            Connect Wallet
-          </button>
-        </div>
-      );
-    } else {
-      if (beneficiaries.length === 0) {
+    if (chainID === "0x4") {
+      if (!currentAccount) {
         return (
           <div>
-            <AddBeneficiary contract={tokenContract} />
+            <div className='subheader-text'>
+              Interact with the XYZ token 🪙
+            </div>
+            <button className='connect-wallet' onClick={connectWallet}>
+              Connect Wallet
+            </button>
           </div>
-        )
+        );
       } else {
-        return (
-          <div className='App-body'>
+        if (beneficiaries.length === 0) {
+          return (
             <div>
-              <Beneficiary contract={tokenContract} beneficiaries={beneficiaries} />
+              <AddBeneficiary contract={tokenContract} />
             </div>
-            <div >
-              <Vesting contract={tokenContract} beneficiaries={beneficiaries} />
+          )
+        } else {
+          return (
+            <div className='App-body'>
+              <div>
+                <Beneficiary contract={tokenContract} beneficiaries={beneficiaries} />
+              </div>
+              <div >
+                <Vesting contract={tokenContract} beneficiaries={beneficiaries} />
+              </div>
             </div>
-          </div>
-        )
+          )
+        }
       }
+    } else {
+      return (
+        <div style={{ color: "white" }}>
+          <h2>Please connect to Rinkeby</h2>
+          <p>
+            This dapp only works on the Rinkeby network, please switch networks
+            in your connected wallet and refresh page.
+          </p>
+        </div >
+      );
     }
   }
 
