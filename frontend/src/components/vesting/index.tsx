@@ -35,6 +35,7 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
                 console.log("Something went wrong while releasing token: ", error);
             }
         }
+        setReleasing(false);
     }
 
     useEffect(() => {

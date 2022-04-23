@@ -1,0 +1,99 @@
+.add-beneficiary-section {
+  color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.add-beneficiary-section h2 {
+  font-size: 30px;
+}
+
+.add-beneficiary-section p {
+  font-weight: bold;
+}
+
+.add-beneficiary-section form {
+  display: block;
+  width: 100%;
+}
+
+.add-beneficiary-section form input[type=text] {
+  display: inline-block;
+  color: #fff;
+  width: 45%;
+  height: 60px;
+  font-size: 20px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.25);
+  border: none;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.add-beneficiary-section form button {
+  margin-left: 1rem;
+  width: 10%;
+}
+
+.add-beneficiary-section .beneficiary-list {
+  width: 75%;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (minmax(500px, 5fr))[auto-fit];
+      grid-template-columns: repeat(auto-fit, minmax(500px, 5fr));
+  grid-gap: 1rem;
+  justify-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.add-beneficiary-section .beneficiary-list .beneficiary-list-item {
+  color: #00c8ff;
+}
+
+.add-beneficiary-section form {
+  display: block;
+  margin: 1rem;
+}
+
+.add-beneficiary-section form input[type=number] {
+  display: inline-block;
+  display: flexbox;
+  color: black;
+  width: 25%;
+  height: 50px;
+  font-size: 18px;
+  padding: 1rem;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background-color: white;
+  border: none;
+  border-radius: 1rem;
+}
+
+.add-beneficiary-section form input[type='number']::-webkit-inner-spin-button,
+.add-beneficiary-section form input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.add-beneficiary-section form input[type=number],
+.add-beneficiary-section form input[type=number]:hover,
+.add-beneficiary-section form input[type=number]:focus {
+  -moz-appearance: textfield;
+}
+
+.start-vesting {
+  width: 35%;
+}
+/*# sourceMappingURL=add-beneficiary.css.map */
