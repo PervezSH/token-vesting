@@ -13,12 +13,16 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
     const [totalVesting, setTotalVesting] = useState<number>(0);
     const [alreadyVested, setAlreadyVested] = useState<number>(0);
     const [alreadyReleased, setAlreadyReleased] = useState<number>(0);
+    const [isReleasing, setReleasing] = useState<boolean>(false);
 
     // transfers amount of releaseable 
     const releaseToken = async () => {
         try {
             const txn = await contract?.releaseToken();
+            setReleasing(true);
             await txn.wait();
+            setReleasing(false);
+            window.location.reload();
         } catch (error) {
             const stringifiedError = JSON.stringify(error);
             if (stringifiedError.includes("You are not a benificiary!")) {
@@ -31,7 +35,6 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
                 console.log("Something went wrong while releasing token: ", error);
             }
         }
-        alert("XYZ token got released successfully!");
     }
 
     useEffect(() => {
@@ -153,7 +156,7 @@ const Vesting: React.FC<Props> = ({ contract, beneficiaries }) => {
                 </div>
             </div>
             <button onClick={releaseToken}>
-                Release
+                {isReleasing ? 'Releasing...' : 'Release'}
             </button>
             <div>
                 This will trigger transactions that you will need to sign.
