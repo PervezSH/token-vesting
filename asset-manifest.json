@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/token-vesting/static/css/main.0286c199.css",
+    "main.js": "/token-vesting/static/js/main.b8a05614.js",
+    "index.html": "/token-vesting/index.html",
+    "main.0286c199.css.map": "/token-vesting/static/css/main.0286c199.css.map",
+    "main.b8a05614.js.map": "/token-vesting/static/js/main.b8a05614.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0286c199.css",
+    "static/js/main.b8a05614.js"
+  ]
+}
