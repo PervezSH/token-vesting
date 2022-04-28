@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/token-vesting/static/css/main.0286c199.css",
+    "main.css": "/token-vesting/static/css/main.cb3907f8.css",
     "main.js": "/token-vesting/static/js/main.04c9e3b7.js",
     "index.html": "/token-vesting/index.html",
-    "main.0286c199.css.map": "/token-vesting/static/css/main.0286c199.css.map",
+    "main.cb3907f8.css.map": "/token-vesting/static/css/main.cb3907f8.css.map",
     "main.04c9e3b7.js.map": "/token-vesting/static/js/main.04c9e3b7.js.map"
   },
   "entrypoints": [
-    "static/css/main.0286c199.css",
+    "static/css/main.cb3907f8.css",
     "static/js/main.04c9e3b7.js"
   ]
 }
